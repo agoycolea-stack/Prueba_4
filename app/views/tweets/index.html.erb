@@ -1,0 +1,40 @@
+
+<% if current_user%>
+  <%= render 'tweets/form', tweet: @tweet %>
+<% end %>
+
+<div class="row">
+
+  <div class="col-xs-8 col-sm-10 col-md-10">
+    <h1>Tweets</h1>
+  </div>
+  <div class="col-xs-4 col-sm-2 col-md-2">
+    <%= link_to 'New Tweet', new_tweet_path, class: "btn btn-info btn-sm" %>
+  </div>
+</div>
+
+<div class="row">
+  <% @tweets.reverse.each do |tweet| %>
+    <div class="col-sm-12 col-md-12">
+          <%= image_tag (tweet.user.image_url), class:"img_size" if tweet.user.image_url.present?%>
+          <h3><%= tweet.user %></h3>
+          <h3><%= tweet.content %></h3>
+          <h3><%= tweet.likes_count %></h3>
+          <h3><%= tweet.retweets_count %></h3>
+          <small><%= time_ago_in_words(tweet.created_at) %> ago</small>
+          <% if current_user %>
+           <p> 
+           <%= link_to 'Edit', edit_tweet_path(tweet), class: "btn btn-warning" %> 
+           <%= link_to 'Destroy', tweet, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %></p>
+          <% else %>
+            <%= link_to 'Show', tweet, class: "btn btn-primary" %> 
+          <% end %>
+
+    </div>
+  <% end %>
+</div>
+
+
+<br>
+
+<%= paginate @tweets %>
