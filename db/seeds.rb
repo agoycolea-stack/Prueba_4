@@ -8,6 +8,6 @@
 
 
 150.times do
-  tweet = Tweet.create(content: Faker::JapaneseMedia::OnePiece.character, user_id: 1)
+  tweet = Tweet.create(content: Faker::JapaneseMedia::OnePiece.character, user_id: 1, likes_count:1 , retweets_count:0)
 end
 
