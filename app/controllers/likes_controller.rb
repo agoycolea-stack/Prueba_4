@@ -35,12 +35,12 @@ class LikesController < ApplicationController
     else
 
       Like.create(user_id:user_id, tweet_id:tweet_id)
-      
+
       tweet.likes_count = tweet.likes_count + 1
 
     end
 
-  redirect_back(fallback_location: root_path)
+  redirect_to root_path
   tweet.save
 
   end
