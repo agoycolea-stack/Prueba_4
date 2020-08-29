@@ -10,8 +10,7 @@ class LikesController < ApplicationController
 
   def new
     @like = Like.new
-    
-    
+
   end
 
   
@@ -20,18 +19,30 @@ class LikesController < ApplicationController
 
 
   def create
-    @like = Like.new(like_params)
-    @like.user = current_user
 
-    respond_to do |format|
-      if @like.save
-        format.html { redirect_to @like, notice: 'Like was successfully created.' }
-        format.json { render :show, status: :created, location: @like }
-      else
-        format.html { render :new }
-        format.json { render json: @like.errors, status: :unprocessable_entity }
-      end
+    tweet = Tweet.find_by(id:params[:format])
+
+    user_id = current_user.id
+
+    tweet_id = tweet.id
+
+    have_like = Like.where(user_id: user_id, tweet_id: tweet_id).present?
+
+    if have_like && tweet.likes_count > 0
+
+      tweet.likes_count = tweet.likes_count - 1
+
+    else
+
+      Like.create(user_id:user_id, tweet_id:tweet_id)
+      
+      tweet.likes_count = tweet.likes_count + 1
+
     end
+
+  redirect_back(fallback_location: root_path)
+  tweet.save
+
   end
 
 
@@ -49,7 +60,9 @@ class LikesController < ApplicationController
 
 
   def destroy
-    @like.destroy
+  
+      @like.destroy
+    
   end
 
   private

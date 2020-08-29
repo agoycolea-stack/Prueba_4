@@ -7,7 +7,7 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :tweets, dependent: :destroy
   has_many :retweets,dependent: :destroy
-
+  
   def to_s
     name
   end

@@ -4,4 +4,5 @@ class Tweet < ApplicationRecord
   has_many :retweets, dependent: :destroy
   validates :content, presence: true
   paginates_per 50
+  
 end

@@ -3,6 +3,7 @@ class ReretweetsController < ApplicationController
 
   def index
     @retweet = Retweet.all
+    
   end
 
   def show
@@ -19,17 +20,19 @@ class ReretweetsController < ApplicationController
 
 
   def create
-    @retweet = Retweet.new(retweet_params)
+    tweet = Tweet.find_by(id:params[:format])
+    tweet_id = tweet.id
+    user_id = current_user.id
+    tiene_retweet = Retweet.where(user_id: user_id, tweet_id: tweet_id).present?
 
-    respond_to do |format|
-      if @retweet.save
-        format.html { redirect_to @retweet, notice: 'Retweet was successfully created.' }
-        format.json { render :show, status: :created, location: @retweet }
-      else
-        format.html { render :new }
-        format.json { render json: @retweet.errors, status: :unprocessable_entity }
-      end
+    if tiene_retweet && tweet.retweets_count > 0
+      tweet.retweets_count-=1
+    else
+      Retweet.create(user_id:user_id, tweet_id:tweet_id)
+      tweet.retweets_count+=1
     end
+    redirect_back(fallback_location: root_path)
+    tweet.save
   end
 
 
@@ -62,6 +65,6 @@ class ReretweetsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def retweet_params
-      params.require(:retweet).permit(:user_id, :tweet_id)
+      params.require(:retweet).permit(:user, :tweet)
     end
 end
