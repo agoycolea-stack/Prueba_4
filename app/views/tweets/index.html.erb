@@ -1,7 +1,4 @@
 
-<% if current_user%>
-  <%= render 'tweets/form', tweet: @tweet %>
-<% end %>
 
 <div class="row">
 
@@ -19,7 +16,9 @@
           <%= image_tag (tweet.user.image_url), class:"img_size" if tweet.user.image_url.present?%>
           <h3><%= tweet.user %></h3>
           <h3><%= tweet.content %></h3>
+          <%= link_to 'like' , new_like_path, method: :post , class: "far fa-heart"%>
           <h3><%= tweet.likes_count %></h3>
+          <%= link_to 'retweet' , new_retweet_path, method: :post , class: "fas fa-retweet"%>
           <h3><%= tweet.retweets_count %></h3>
           <small><%= time_ago_in_words(tweet.created_at) %> ago</small>
           <% if current_user %>
