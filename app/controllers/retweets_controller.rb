@@ -1,5 +1,4 @@
 class ReretweetsController < ApplicationController
-  before_action :set_reretweet, only: [:show, :edit, :update, :destroy]
 
   def index
     @retweet = Retweet.all
@@ -23,16 +22,17 @@ class ReretweetsController < ApplicationController
     tweet = Tweet.find_by(id:params[:format])
     tweet_id = tweet.id
     user_id = current_user.id
-    tiene_retweet = Retweet.where(user_id: user_id, tweet_id: tweet_id).present?
+    have_retweet = Retweet.where(user_id: user_id,tweet_id: tweet_id).present?
 
-    if tiene_retweet && tweet.retweets_count > 0
-      tweet.retweets_count-=1
+    if have_retweet && tweet.retweets_count > 0
+      tweet.retweets_count = tweet.retweets_count -1
     else
-      Retweet.create(user_id:user_id, tweet_id:tweet_id)
-      tweet.retweets_count+=1
+      tweet.retweets_count = tweet.retweets_count +1
     end
-    redirect_back(fallback_location: root_path)
+
+    redirect_to root_path
     tweet.save
+
   end
 
 
@@ -60,7 +60,7 @@ class ReretweetsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_retweet
-      @retweet = retweet.find(params[:id])
+      @retweet = Retweet.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

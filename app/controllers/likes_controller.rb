@@ -19,30 +19,21 @@ class LikesController < ApplicationController
 
 
   def create
-
     tweet = Tweet.find_by(id:params[:format])
-
-    user_id = current_user.id
-
     tweet_id = tweet.id
-
+    user_id = current_user.id
     have_like = Like.where(user_id: user_id, tweet_id: tweet_id).present?
 
     if have_like && tweet.likes_count > 0
-
       tweet.likes_count = tweet.likes_count - 1
-
     else
-
       Like.create(user_id:user_id, tweet_id:tweet_id)
-
       tweet.likes_count = tweet.likes_count + 1
-
     end
 
   redirect_to root_path
   tweet.save
-
+  
   end
 
 
