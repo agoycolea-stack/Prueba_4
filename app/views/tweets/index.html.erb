@@ -10,7 +10,7 @@
           <h3><%= tweet.content %></h3>
           <%= link_to 'like', likes_path(tweet.id), method: :post, class: "far fa-heart"%>
           <h3><%= tweet.likes_count %></h3>
-          <%= link_to 'retweet', retweets_path(tweet.id), method: :post , class: "fas fa-retweet"%>
+          <i class="fas fa-retweet"></i>
           <h3><%= tweet.retweets_count %></h3>
           <small><%= time_ago_in_words(tweet.created_at) %> ago</small>
     </div>

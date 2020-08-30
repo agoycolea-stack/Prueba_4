@@ -1,4 +1,5 @@
 class ReretweetsController < ApplicationController
+  before_action :set_like, only: [:show, :edit, :update, :destroy]
 
   def index
     @retweet = Retweet.all
@@ -22,11 +23,12 @@ class ReretweetsController < ApplicationController
     tweet = Tweet.find_by(id:params[:format])
     tweet_id = tweet.id
     user_id = current_user.id
-    have_retweet = Retweet.where(user_id: user_id,tweet_id: tweet_id).present?
+    have_retweet = Retweet.where(user_id: user_id, tweet_id: tweet_id).present?
 
     if have_retweet && tweet.retweets_count > 0
       tweet.retweets_count = tweet.retweets_count -1
     else
+      Retweet.create(user_id:user_id, tweet_id:tweet_id)
       tweet.retweets_count = tweet.retweets_count +1
     end
 
@@ -51,10 +53,6 @@ class ReretweetsController < ApplicationController
 
   def destroy
     @retweet.destroy
-    respond_to do |format|
-      format.html { redirect_to retweets_url, notice: 'Retweet was successfully destroyed.' }
-      format.json { head :no_content }
-    end
   end
 
   private
@@ -65,6 +63,6 @@ class ReretweetsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def retweet_params
-      params.require(:retweet).permit(:user, :tweet)
+      params.require(:retweet).permit(:tweet_id, :user_id)
     end
 end
