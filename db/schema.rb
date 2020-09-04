@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_29_034320) do
+ActiveRecord::Schema.define(version: 2020_09_02_011529) do
 
   create_table "favorites", force: :cascade do |t|
     t.string "favoritable_type", null: false
@@ -27,6 +27,13 @@ ActiveRecord::Schema.define(version: 2020_08_29_034320) do
     t.index ["favoritor_id", "favoritor_type"], name: "fk_favorites"
     t.index ["favoritor_type", "favoritor_id"], name: "index_favorites_on_favoritor_type_and_favoritor_id"
     t.index ["scope"], name: "index_favorites_on_scope"
+  end
+
+  create_table "follower_followings", force: :cascade do |t|
+    t.integer "user_follower_id"
+    t.integer "user_following_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "likes", force: :cascade do |t|

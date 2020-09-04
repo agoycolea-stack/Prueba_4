@@ -3,8 +3,13 @@ class TweetsController < ApplicationController
   before_action :set_tweet, only: [:show, :edit, :update, :destroy]
 
   def index
+
     @tweet = Tweet.new
-    @tweets = Tweet.order(:created_at).page params[:page]
+    if user_signed_in?
+      @tweets = Tweet.tweets_for_me(current_user).order('created_at DESC').page params[:page]  
+    else
+      @tweets = Tweet.order('created_at desc').page params[:page]
+    end  
   end
 
   def show

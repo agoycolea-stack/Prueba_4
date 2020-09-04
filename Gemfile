@@ -29,7 +29,7 @@ gem 'jbuilder', '~> 2.5'
  gem 'devise'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
-
+gem 'activeadmin'
 gem 'kaminari', :git => 'https://github.com/kaminari/kaminari'
 gem 'faker'
 # Use Capistrano for deployment
