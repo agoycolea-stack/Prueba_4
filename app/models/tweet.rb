@@ -7,4 +7,18 @@ class Tweet < ApplicationRecord
   
 
   scope :tweets_for_me, -> (user) { where(user_id: user.followings.ids) }
+
+
+  def array_hashtags 
+
+    hashtag = [ ]
+    self.content.split (" ").each do |search|
+      if search.start_with("#")
+        
+        search = link_to(search,tweets_search(search))
+      end
+    hashtag.push(search)
+    end
+  end
+
 end
