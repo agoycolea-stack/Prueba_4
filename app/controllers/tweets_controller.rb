@@ -3,13 +3,16 @@ class TweetsController < ApplicationController
   before_action :set_tweet, only: [:show, :edit, :update, :destroy]
 
   def index
+    #https://github.com/activerecord-hackery/ransack
 
-    @tweet = Tweet.new
-    if user_signed_in?
-      @tweets = Tweet.tweets_for_me(current_user).order('created_at DESC').page params[:page]  
+    if !current_user
+      @q = ransack(params[:q])
+      @tweets = @query.result(distinct: true).page(params[:page])
     else
-      @tweets = Tweet.order('created_at desc').page params[:page]
-    end  
+      @q = Tweet.tweets_for_me(current_user).ransack(params[:q])
+      @tweets = @q.result(distinct:true).page(params[:page])
+      @tweet = Tweet.new
+    end
   end
 
   def show
