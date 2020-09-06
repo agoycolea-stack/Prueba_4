@@ -5,15 +5,18 @@ class TweetsController < ApplicationController
   def index
     #https://github.com/activerecord-hackery/ransack
 
+
+
     if !current_user
-      @q = ransack(params[:q])
-      @tweets = @query.result(distinct: true).page(params[:page])
+      @q = Tweet.ransack(params[:q])
+      @tweets = @q.result(distinct: true).page(params[:page])
     else
       @q = Tweet.tweets_for_me(current_user).ransack(params[:q])
       @tweets = @q.result(distinct:true).page(params[:page])
       @tweet = Tweet.new
     end
   end
+
 
   def show
     #@user = @user.image_url

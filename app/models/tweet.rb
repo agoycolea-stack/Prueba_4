@@ -12,12 +12,12 @@ class Tweet < ApplicationRecord
   def array_hashtags 
 
     hashtag = [ ]
-    self.content.split (" ").each do |search|
-      if search.start_with("#")
+    self.content.split (" ").each do |word|
+      if word.start_with("#")
         
-        search = link_to(search,tweets_search(search))
+        word = link_to(word,"tweets?search#{word}")
       end
-    hashtag.push(search)
+    hashtag.push(word)
     end
   end
 
