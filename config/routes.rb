@@ -8,7 +8,18 @@ Rails.application.routes.draw do
   resources :likes
   get 'tweets/show'
   root 'tweets#index'
+  get 'apis/:news', to: 'api#news'
+  get 'api/:from/:to', to: 'api#dates'
+  get 'api/dates'
+  post 'api/tweets', to: "tweets#create"
 
+  namespace :api, defaults: {format: :json} do
+    namespace :v1 do 
+      devise_scope :user do
+        post "sign_up", to: "registrations#create"
+        post "sign_in", to: "sessions#create"
+      end
+    end
+  end
   
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

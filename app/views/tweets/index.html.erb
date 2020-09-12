@@ -15,12 +15,6 @@
     <div class="col-sm-12 col-md-12">
           <h3><%= tweet.user %></h3>
           <%= image_tag (tweet.user.image_url), class:"img_size" if tweet.user.image_url.present?%>
-
-
-          
-
-
-
           <h3><%= tweet.content %></h3>
           <%= link_to 'like', likes_path(tweet.id), method: :post, class: "far fa-heart"%>
           <h3><%= tweet.likes_count %></h3>
